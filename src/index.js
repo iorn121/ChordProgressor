@@ -4,10 +4,10 @@ import * as Tone from 'tone';
 
 import './index.css';
 import Select from 'react-select';
+import { Instrument } from 'tone/build/esm/instrument/Instrument';
 
+// 楽器
 
-// ルート音
-const rootSound = {C: 0, Cs: 1, D: 2, Ds: 3, E: 4, F: 5, Fs: 6, G: 7, Gs: 8, A: 9, As: 10, B: 11};
 
 // 音階
 const scale= [
@@ -26,26 +26,27 @@ const scale= [
   // 6オクターブ目
   'C6', 'C#6', 'D6', 'D#6', 'E6', 'F6', 'F#6', 'G6', 'G#6', 'A6', 'A#6', 'B6',
 ];
+
+// 休符
 const rest =null;
 
-//和音
-var Major_chord = [-12,0,4,7];
-
+// キー
 const keynotes=  [
-    {value: "C", label: "C"},
-    {value: "Cs", label: "Cs"},
-    {value: "D", label: "D"},
-    {value: "Ds", label: "Ds"},
-    {value: "E", label: "E"},
-    {value: "F", label: "F"},
-    {value: "Fs", label: "Fs"},
-    {value: "G", label: "G"},
-    {value: "Gs", label: "Gs"},
-    {value: "A", label: "A"},
-    {value: "As", label: "As"},
-    {value: "B", label: "B"},
+    {value: 0, label: "C"},
+    {value: 1, label: "Cs"},
+    {value: 2, label: "D"},
+    {value: 3, label: "Ds"},
+    {value: 4, label: "E"},
+    {value: 5, label: "F"},
+    {value: 6, label: "Fs"},
+    {value: 7, label: "G"},
+    {value: 8, label: "Gs"},
+    {value: 9, label: "A"},
+    {value: 10, label: "As"},
+    {value: 11, label: "B"},
 ]
 
+// オクターブ
 const octaves=[
     {value: 1, label: "1"},
     {value: 2, label: "2"},
@@ -54,34 +55,53 @@ const octaves=[
     {value: 5, label: "5"},
 ]
 
+// 和音
+const chords=[
+    {value:[0,4,7],label: "Major"},
+    {value:[0,3,7],label: "Minor"},
+    {value:[0,4,7,10],label: "7"},
+    {value:[0,3,7,10],label: "m7"},
+    {value:[0,4,7,11],label: "M7"},
+    {value:[0,3,7,11],label: "mM7"},
+    {value:[0,4,7,9],label: "6"},
+    {value:[0,4,7,2],label: "add9"},
+    {value:[0,5,7],label: "sus4"},
+    {value:[0,4,8],label: "aug"},
+    {value:[0,3,6,9],label: "dim"},
+]
+
 
 class soundApp extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            key: "C",
+            key: 0,
             pitch: 4,
+            chord: [0,4,7],
+            display:"Major",
         };
     }
 
     render() {
+        const playChord=(e)=> {
+            var synth = new Tone.PolySynth().toDestination();
+            var base=this.state.key+this.state.pitch*12;
+            var tones = this.state.chord.map(function(tone) {
+                return scale[base+tone];
+            });
+            synth.triggerAttackRelease(tones,"4n");
+            console.log(tones);
+        }
         const changeKey=(e)=> {
             this.setState({key:e.value});
             console.log(e.value);
         }
-        const playChord=(e)=> {
-            var synth = new Tone.PolySynth().toDestination();
-            var base=rootSound[this.state.key];
-            var pitch=this.state.pitch*12;
-            synth.triggerAttackRelease(Major_chord.map(function(tone) {
-                return scale[pitch+base+tone];
-            }),"4n");
-            console.log(Major_chord.map(function(tone) {
-                return scale[pitch+base+tone];
-            }));
-        }
         const changePitch=(e)=>{
             this.setState({pitch:e.value});
+            console.log(e.value);
+        }
+        const changeChord=(e)=>{
+            this.setState({chord:e.value,display:e.label});
             console.log(e.value);
         }
         return (
@@ -90,7 +110,9 @@ class soundApp extends React.Component {
                 <Select options={keynotes} onChange={(e)=>changeKey(e)} />
                 <div className="pitch">Select Pitch</div>
                 <Select options={octaves} onChange={(e)=>changePitch(e)} />
-                <h1>{this.state.key}</h1>
+                <div className="chord">Select Chord</div>
+                <Select options={chords} onChange={(e)=>changeChord(e)} />
+                <h1>{scale[this.state.key+this.state.pitch*12]} {this.state.display}</h1>
                 <button id="button" onClick={(e)=>playChord(e)}>Start</button>
             </div>
         );
