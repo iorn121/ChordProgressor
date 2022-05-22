@@ -163,11 +163,11 @@ export default function SoundApp() {
   };
   const playChord = (e) => {
     var synth = new Tone.PolySynth().toDestination();
-    var base = key + pitch * 12;
-    var tones = chord.map(function (tone) {
+    var base = key[0] + pitch * 12;
+    var tones = chord[0].map(function (tone) {
       return scale[base + tone];
     });
-    synth.triggerAttackRelease(tones, length);
+    synth.triggerAttackRelease(tones, length[0]);
     console.log(tones);
   };
   const changeKey = (e) => {
