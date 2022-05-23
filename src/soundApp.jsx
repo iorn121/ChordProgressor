@@ -1,8 +1,7 @@
 import React,{useState} from "react";
-import ReactDOM from "react-dom";
 import * as Tone from "tone";
+import axios from 'axios';
 
-import "./index.css";
 import Select from "react-select";
 import { Instrument } from "tone/build/esm/instrument/Instrument";
 
@@ -158,6 +157,7 @@ export default function SoundApp() {
   const [length, setLength] = useState(["4n","四分音符"]);
   const [name, setName] = useState("C4Major四分音符");
 
+  const url="https://chordprogressor-api.herokuapp.com/api/chord/";
   const changeName = (k,p,c,l)=>{
     setName(k[1]+p.toString()+c[1]+l[1]);
   };
@@ -169,6 +169,7 @@ export default function SoundApp() {
     });
     synth.triggerAttackRelease(tones, length[0]);
     console.log(tones);
+    console.log(chords[3]);
   };
   const changeKey = (e) => {
     var now=[e.value,e.label];
@@ -193,6 +194,17 @@ export default function SoundApp() {
     changeName(key,pitch,chord,now);
     console.log(now);
   };
+  const postChord = (e) => {
+    const data={
+      "name": name,
+      "key": key[0],
+      "octave": pitch,
+      "chord": chord[0].join(" "),
+      "length": length[0]
+    };
+    axios.post(url,data)
+    .then(() => console.log(data));
+  }
   return (
     <div id="app">
       <div className="key">Select Key</div>
@@ -208,6 +220,9 @@ export default function SoundApp() {
       </h1>
       <button id="button" onClick={(e) => playChord(e)}>
         Start
+      </button>
+      <button id="button" onClick={() => postChord()}>
+        Post
       </button>
     </div>
   )

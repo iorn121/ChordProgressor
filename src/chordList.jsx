@@ -5,9 +5,10 @@ import useSWR from "swr";
 //fetcher関数の作成
 const fetcher = (url) => fetch(url).then((r) => r.json());
 
-export default function index() {
+export default function ChordList() {
   const { data, error } = useSWR(
-    "https://chord-progressor-api.herokuapp.com/api/chord/",
+    "https://chordprogressor-api.herokuapp.com/api/chord/",
+    // "https://api.adviceslip.com/advice",
     fetcher
   );
   //エラー
