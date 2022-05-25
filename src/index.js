@@ -7,13 +7,14 @@ import Select from 'react-select';
 import { Instrument } from 'tone/build/esm/instrument/Instrument';
 import SoundApp from './soundApp.jsx';
 import ChordList from './chordList.jsx';
+import Key from './key.jsx';
 
 
 
 ReactDOM.render(
     <>
-        <SoundApp />
-        <ChordList />
+        <Key />
+        {/* <SoundApp /> */}
     </>,
     document.getElementById('root')
 );

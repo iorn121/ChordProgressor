@@ -1,6 +1,7 @@
-import React,{useState} from "react";
+import React,{useState, useEffect} from "react";
 import * as Tone from "tone";
 import axios from 'axios';
+
 
 import Select from "react-select";
 import { Instrument } from "tone/build/esm/instrument/Instrument";
@@ -150,27 +151,38 @@ const lengths = [
   { value: "16n", label: "十六分音符" },
 ];
 
+const playChord = (key, pitch,chord,length) => {
+  var synth = new Tone.PolySynth().toDestination();
+  var base = key + pitch * 12;
+  var tones = chord.map(function (tone) {
+    return scale[base + tone];
+  });
+  synth.triggerAttackRelease(tones, length);
+  console.log(tones);
+};
+
 export default function SoundApp() {
   const [key, setKey] =useState([0,"C"]);
   const [pitch, setPitch] =useState(4);
   const [chord, setChord] = useState([[0, 4, 7],"Major"]);
   const [length, setLength] = useState(["4n","四分音符"]);
-  const [name, setName] = useState("C4Major四分音符");
+  const [name, setName] = useState("C4/Major/四分音符");
+  const [data, setData] = useState(null);
 
   const url="https://chordprogressor-api.herokuapp.com/api/chord/";
   const changeName = (k,p,c,l)=>{
-    setName(k[1]+p.toString()+c[1]+l[1]);
+    setName(k[1]+p.toString()+"/"+c[1]+"/"+l[1]);
   };
-  const playChord = (e) => {
-    var synth = new Tone.PolySynth().toDestination();
-    var base = key[0] + pitch * 12;
-    var tones = chord[0].map(function (tone) {
-      return scale[base + tone];
-    });
-    synth.triggerAttackRelease(tones, length[0]);
-    console.log(tones);
-    console.log(chords[3]);
-  };
+  // const playChord = (e) => {
+  //   var synth = new Tone.PolySynth().toDestination();
+  //   var base = key[0] + pitch * 12;
+  //   var tones = chord[0].map(function (tone) {
+  //     return scale[base + tone];
+  //   });
+  //   synth.triggerAttackRelease(tones, length[0]);
+  //   console.log(tones);
+  //   console.log(chords[3]);
+  // };
   const changeKey = (e) => {
     var now=[e.value,e.label];
     setKey(now);
@@ -203,9 +215,19 @@ export default function SoundApp() {
       "length": length[0]
     };
     axios.post(url,data)
-    .then(() => console.log(data));
+    .then(() => console.log(data))
+    .then(()=> getChord());
   }
+  const getChord = (e) => {
+    axios.get(url)
+    .then((response) => {
+      setData(response.data);
+      console.log(response.data);
+    })
+  }
+  useEffect(() =>{getChord()},[]);
   return (
+    <>
     <div id="app">
       <div className="key">Select Key</div>
       <Select options={keys} onChange={(e) => changeKey(e)} />
@@ -218,12 +240,22 @@ export default function SoundApp() {
       <h1>
         {name}
       </h1>
-      <button id="button" onClick={(e) => playChord(e)}>
-        Start
+      <button id="button" onClick={(e) => playChord(key[0],pitch,chord[0],length[0])}>
+        Play
       </button>
       <button id="button" onClick={() => postChord()}>
         Post
       </button>
     </div>
+    <div>
+      <ul>
+        {data.map((ch)=>{
+          return (
+            <li>{ch.name}</li>
+          )
+        })}
+      </ul>
+    </div>
+    </>
   )
 }

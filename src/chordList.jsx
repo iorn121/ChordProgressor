@@ -1,6 +1,6 @@
 
 
-import useSWR from "swr";
+import useSWR, {useSWRConfig} from "swr";
 
 //fetcher関数の作成
 const fetcher = (url) => fetch(url).then((r) => r.json());
