@@ -215,15 +215,22 @@ export default function SoundApp() {
       "length": length[0]
     };
     axios.post(url,data)
-    .then(() => console.log(data))
+    // .then(() => console.log(data))
     .then(()=> getChord());
   }
-  const getChord = (e) => {
+  const getChord = () => {
     axios.get(url)
     .then((response) => {
       setData(response.data);
-      console.log(response.data);
+      // console.log(response.data);
     })
+  }
+  const deleteChord = (id) => {
+    axios.delete(url+id)
+    .then(()=>{
+      console.log(id+"を削除しました");
+    })
+    .then(() => getChord());
   }
   useEffect(() =>{getChord()},[]);
   return (
@@ -248,10 +255,15 @@ export default function SoundApp() {
       </button>
     </div>
     <div>
+      {/* <button id="button" onClick={() =>{data.forEach((e)=>playChord(e.key,e.pitch,e.chord.split(" ").map((c)=>Number(c)),e.length))}}>Play All</button> */}
+      <button id="button" onClick={() =>{data.forEach((e)=>playChord(e.key,e.pitch,e.chord.split(" ").map(Number),e.length))}}>Play All</button>
       <ul>
-        {data.map((ch)=>{
+        {data?.map((ch)=>{
           return (
-            <li>{ch.name}</li>
+            <div key={ch.id}>
+              <li >{ch.name}</li>
+              <button id="button" onClick={(e) => deleteChord(ch.id)}>Delete</button>
+            </div>
           )
         })}
       </ul>
