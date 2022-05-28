@@ -151,14 +151,21 @@ const lengths = [
   { value: "16n", label: "十六分音符" },
 ];
 
-const playChord = (key, pitch,chord,length) => {
+const playChord = (data) => {
   var synth = new Tone.PolySynth().toDestination();
-  var base = key + pitch * 12;
-  var tones = chord.map(function (tone) {
-    return scale[base + tone];
-  });
-  synth.triggerAttackRelease(tones, length);
-  console.log(tones);
+  const now=Tone.now();
+  let time=0;
+  for (let d of data) {
+    var base = d.key + d.octave * 12;
+    var tones = d.chord.split(" ").map((tone) => {
+      tone=Number(tone);
+      return scale[base + tone];
+    });
+    synth.triggerAttackRelease(tones,d.length, now+time);
+    time+=2/Number(d.length.slice(0,-1));
+    console.log(tones);
+    console.log(time);
+  }
 };
 
 export default function SoundApp() {
@@ -247,7 +254,16 @@ export default function SoundApp() {
       <h1>
         {name}
       </h1>
-      <button id="button" onClick={(e) => playChord(key[0],pitch,chord[0],length[0])}>
+      <button id="button" onClick={(e) => {
+        const data=[{
+          "name": name,
+          "key": key[0],
+          "octave": pitch,
+          "chord": chord[0].join(" "),
+          "length": length[0]
+        }];
+        playChord(data);
+      }}>
         Play
       </button>
       <button id="button" onClick={() => postChord()}>
@@ -255,8 +271,10 @@ export default function SoundApp() {
       </button>
     </div>
     <div>
-      {/* <button id="button" onClick={() =>{data.forEach((e)=>playChord(e.key,e.pitch,e.chord.split(" ").map((c)=>Number(c)),e.length))}}>Play All</button> */}
-      <button id="button" onClick={() =>{data.forEach((e)=>playChord(e.key,e.pitch,e.chord.split(" ").map(Number),e.length))}}>Play All</button>
+
+      <button id="button" onClick={() =>{
+        playChord(data);
+      }}>Play All</button>
       <ul>
         {data?.map((ch)=>{
           return (
