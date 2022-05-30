@@ -16,7 +16,7 @@ export default function Length(props) {
     const length=[0,"C"];
     return(
         <>
-            <div className="length">Select Key</div>
+            <div className="length">Select Length</div>
             <Select options={lengths} onChange={(e) => props.setLength([e.value,e.label])} />
         </>
     )

@@ -24,7 +24,7 @@ export default function Octave(props) {
     const chord=[0,"C"];
     return(
         <>
-            <div className="chord">Select Octave</div>
+            <div className="chord">Select Chord</div>
             <Select options={chords} onChange={(e) => props.setChord([e.value,e.label])} />
         </>
     )

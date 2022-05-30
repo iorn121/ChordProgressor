@@ -2,6 +2,8 @@ import React,{useState, useEffect} from "react";
 
 import Select from "react-select";
 
+import FormControl from "@material-ui/core/FormControl";
+import { InputLabel } from "@material-ui/core";
 
 export default function Octave(props) {
     // オクターブ
@@ -16,10 +18,10 @@ export default function Octave(props) {
     // const [key,setKey]= useState({value:0, label:"C"});
     const octave=[0,"C"];
     return(
-        <>
-            <div className="octave">Select Octave</div>
+        <FormControl>
+            <InputLabel>Select Octave</InputLabel>
             <Select options={octaves} onChange={(e) => props.setOctave(e.value)} />
-        </>
+        </FormControl>
     )
 
 }

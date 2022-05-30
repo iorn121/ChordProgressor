@@ -1,7 +1,8 @@
+import { InputLabel } from "@material-ui/core";
 import React,{useState, useEffect} from "react";
 
 import Select from "react-select";
-
+import FormControl from "@material-ui/core/FormControl";
 
 export default function Key(props) {
     const keys = [
@@ -21,10 +22,10 @@ export default function Key(props) {
     // const [key,setKey]= useState({value:0, label:"C"});
     const key=[0,"C"];
     return(
-        <>
-            <div className="key">Select Key</div>
-            <Select options={keys} onChange={(e) => props.setKey([e.value,e.label])} />
-        </>
+        <FormControl>
+            <InputLabel >Select Key</InputLabel>
+            <Select native label="Key" options={keys} onChange={(e) => props.setKey([e.value,e.label])} />
+        </FormControl>
     )
 
 }

@@ -1,18 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import * as Tone from 'tone';
 
 import './index.css';
-import Select from 'react-select';
-import { Instrument } from 'tone/build/esm/instrument/Instrument';
 import SoundApp from './soundApp.jsx';
-import ChordList from './chordList.jsx';
-import Key from './key.jsx';
+
+import AppBar from "@material-ui/core/AppBar";
+import Typography from "@material-ui/core/Typography";
 
 
 
 ReactDOM.render(
     <>
+        <AppBar position="static" >
+            <Typography variant="h4">
+            Chord Progressor
+            </Typography>
+        </AppBar>
         <SoundApp />
     </>,
     document.getElementById('root')

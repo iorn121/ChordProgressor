@@ -7,6 +7,10 @@ import Chord from "./chord";
 import Length from "./length";
 import PlayChord from "./playChord";
 
+import Button from "@material-ui/core/Button";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import CardActions from "@material-ui/core/CardActions";
 
 export default function SoundApp() {
   const [key, setKey] =useState([0,"C"]);
@@ -19,7 +23,7 @@ export default function SoundApp() {
 
   const convertData= ()=> {
     const jsonData={
-      "name": key[1]+octave,
+      "name": key[1]+octave+"/"+chord[1]+"/"+length[1],
       "key": key[0],
       "octave": octave,
       "chord": chord[0].join(" "),
@@ -51,30 +55,34 @@ export default function SoundApp() {
   useEffect(() =>{getChord()},[]);
   return (
     <>
-    <div id="app">
-
+    <Card><CardContent>
       <Key setKey={setKey} />
       <Octave setOctave={setOctave} />
       <Chord setChord={setChord} />
       <Length setLength={setLength} />
       <h1>
         {key[1]+octave}/{chord[1]}/{length[1]}
-      </h1>
-      <button id="button" onClick={() => {
+      </h1></CardContent>
+      <CardActions>
+      <Button variant="contained" color="primary" id="button" onClick={() => {
         const jsonData=[convertData()];
         PlayChord(jsonData);
       }}>
         Play
-      </button>
-      <button id="button" onClick={() => postChord()}>
+      </Button>
+      <Button variant="contained" color="primary" id="button" onClick={() => postChord()}>
         Post
-      </button>
-    </div>
+      </Button></CardActions></Card>
     <div>
 
-      <button id="button" onClick={() =>{
+      <Button variant="contained" color="primary" id="button" onClick={() =>{
         PlayChord(data);
-      }}>Play All</button>
+      }}>Play All</Button>
+      <Button variant="contained" color="primary" id="button" onClick={() =>{
+        data.forEach((d)=> {
+          deleteChord(d.id)
+        });
+      }}>Delete All</Button>
       <ul>
         {data?.map((ch)=>{
           return (
