@@ -3,7 +3,7 @@ import React,{useState, useEffect} from "react";
 import Select from "react-select";
 
 
-export default function Key() {
+export default function Key(props) {
     const keys = [
         { value: 0, label: "C" },
         { value: 1, label: "Cs" },
@@ -18,11 +18,12 @@ export default function Key() {
         { value: 10, label: "As" },
         { value: 11, label: "B" },
     ];
-    const [key,setKey]= useState({value:0, label:"C"});
+    // const [key,setKey]= useState({value:0, label:"C"});
+    const key=[0,"C"];
     return(
         <>
             <div className="key">Select Key</div>
-            <Select options={keys} onChange={(e) => setKey(e)} />
+            <Select options={keys} onChange={(e) => props.setKey([e.value,e.label])} />
         </>
     )
 

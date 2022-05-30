@@ -13,7 +13,6 @@ import Key from './key.jsx';
 
 ReactDOM.render(
     <>
-        {/* <Key /> */}
         <SoundApp />
     </>,
     document.getElementById('root')
