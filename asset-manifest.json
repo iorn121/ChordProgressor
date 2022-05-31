@@ -1,12 +1,13 @@
 {
   "files": {
-    "main.css": "/ChordProgressor/static/css/main.31d6cfe0.css",
-    "main.js": "/ChordProgressor/static/js/main.5bea2aa8.js",
+    "main.css": "/ChordProgressor/static/css/main.89fdb97c.css",
+    "main.js": "/ChordProgressor/static/js/main.4c5b1494.js",
     "index.html": "/ChordProgressor/index.html",
-    "main.5bea2aa8.js.map": "/ChordProgressor/static/js/main.5bea2aa8.js.map"
+    "main.89fdb97c.css.map": "/ChordProgressor/static/css/main.89fdb97c.css.map",
+    "main.4c5b1494.js.map": "/ChordProgressor/static/js/main.4c5b1494.js.map"
   },
   "entrypoints": [
-    "static/css/main.31d6cfe0.css",
-    "static/js/main.5bea2aa8.js"
+    "static/css/main.89fdb97c.css",
+    "static/js/main.4c5b1494.js"
   ]
 }
