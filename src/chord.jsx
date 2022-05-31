@@ -1,6 +1,7 @@
-import React,{useState, useEffect} from "react";
+import React from "react";
 
 import Select from "react-select";
+import {FormControl,Typography,Box,Grid} from "@mui/material";
 
 
 export default function Octave(props) {
@@ -23,10 +24,18 @@ export default function Octave(props) {
     // const [key,setKey]= useState({value:0, label:"C"});
     const chord=[0,"C"];
     return(
-        <>
-            <div className="chord">Select Chord</div>
-            <Select options={chords} onChange={(e) => props.setChord([e.value,e.label])} />
-        </>
+        <Box>
+        <Grid container direction="row" alignContent="center" justifyContent="space-between">
+        <Grid item sx={{p:2}}>
+            <Typography variant="h6" htmlFor="chord-select" sx={{fontWeight: "light"}}>Select Chord</Typography>
+        </Grid>
+        <Grid item sx={{p:2}}>
+            <FormControl>
+                <Select native id="key-select" label="Key" options={chords} onChange={(e) => props.setChord([e.value,e.label])} />
+            </FormControl>
+        </Grid>
+        </Grid>
+        </Box>
     )
 
 }

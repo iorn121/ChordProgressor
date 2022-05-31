@@ -97,12 +97,12 @@ const scale = [
 ];
 
 export default function PlayChord (data) {
-  var synth = new Tone.PolySynth().toDestination();
+  let synth = new Tone.PolySynth().toDestination();
   const now=Tone.now();
   let time=0;
   for (let d of data) {
-    var base = d.key + d.octave * 12;
-    var tones = d.chord.split(" ").map((tone) => {
+    let base = d.key + d.octave * 12;
+    let tones = d.chord.split(" ").map((tone) => {
       tone=Number(tone);
       return scale[base + tone];
     });

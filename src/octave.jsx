@@ -1,9 +1,9 @@
-import React,{useState, useEffect} from "react";
+import React from "react";
 
 import Select from "react-select";
 
-import FormControl from "@material-ui/core/FormControl";
-import { InputLabel } from "@material-ui/core";
+import {FormControl,Typography,Box,Grid} from "@mui/material";
+
 
 export default function Octave(props) {
     // オクターブ
@@ -18,10 +18,18 @@ export default function Octave(props) {
     // const [key,setKey]= useState({value:0, label:"C"});
     const octave=[0,"C"];
     return(
-        <FormControl>
-            <InputLabel>Select Octave</InputLabel>
-            <Select options={octaves} onChange={(e) => props.setOctave(e.value)} />
-        </FormControl>
+        <Box>
+        <Grid container direction="row" alignContent="center" justifyContent="space-between">
+        <Grid item sx={{p:2}}>
+            <Typography variant="h6" htmlFor="key-select" sx={{fontWeight: "light"}}>Select Octave</Typography>
+        </Grid>
+        <Grid item sx={{p:2}}>
+            <FormControl>
+                <Select native id="octave-select" label="Octave" options={octaves} onChange={(e) => props.setOctave(e.value)} />
+            </FormControl>
+        </Grid>
+        </Grid>
+        </Box>
     )
 
 }

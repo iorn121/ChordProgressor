@@ -1,8 +1,7 @@
-import { InputLabel } from "@material-ui/core";
-import React,{useState, useEffect} from "react";
+import React from "react";
 
 import Select from "react-select";
-import FormControl from "@material-ui/core/FormControl";
+import {FormControl,Typography,Box,Grid} from "@mui/material";
 
 export default function Key(props) {
     const keys = [
@@ -22,10 +21,18 @@ export default function Key(props) {
     // const [key,setKey]= useState({value:0, label:"C"});
     const key=[0,"C"];
     return(
-        <FormControl>
-            <InputLabel >Select Key</InputLabel>
-            <Select native label="Key" options={keys} onChange={(e) => props.setKey([e.value,e.label])} />
-        </FormControl>
+        <Box>
+        <Grid container direction="row" alignContent="center" justifyContent="space-between">
+        <Grid item sx={{p:2}}>
+            <Typography variant="h6" htmlFor="key-select" sx={{fontWeight: "light"}}>Select Key</Typography>
+        </Grid>
+        <Grid item sx={{p:2}}>
+            <FormControl>
+                <Select native id="key-select" label="Key" options={keys} onChange={(e) => props.setKey([e.value,e.label])} />
+            </FormControl>
+        </Grid>
+        </Grid>
+        </Box>
     )
 
-}
+} 

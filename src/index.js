@@ -3,20 +3,18 @@ import ReactDOM from 'react-dom';
 
 import './index.css';
 import SoundApp from './soundApp.jsx';
+import Header from './header';
+import { styled } from '@mui/material/styles';
 
-import AppBar from "@material-ui/core/AppBar";
-import Typography from "@material-ui/core/Typography";
-
+const BG=styled("div")(({theme})=>({
+    backgroundColor: theme.palette.background.paper,
+}));
 
 
 ReactDOM.render(
-    <>
-        <AppBar position="static" >
-            <Typography variant="h4">
-            Chord Progressor
-            </Typography>
-        </AppBar>
+    <BG>
+        <Header />
         <SoundApp />
-    </>,
+    </BG>,
     document.getElementById('root')
 );

@@ -7,10 +7,9 @@ import Chord from "./chord";
 import Length from "./length";
 import PlayChord from "./playChord";
 
-import Button from "@material-ui/core/Button";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import CardActions from "@material-ui/core/CardActions";
+import {Button,Card,CardContent,CardActions,Grid,Typography,List,ListItem, ListItemAvatar,ListItemText,IconButton} from "@mui/material";
+import MusicNoteIcon from '@mui/icons-material/MusicNote';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 export default function SoundApp() {
   const [key, setKey] =useState([0,"C"]);
@@ -54,46 +53,55 @@ export default function SoundApp() {
   }
   useEffect(() =>{getChord()},[]);
   return (
-    <>
-    <Card><CardContent>
+    <Grid container direction="column" alignContent="center" justifyContent="center">
+    <Card variant="outlined" sx={{m:2,width: 450}}>
+    <CardContent>
       <Key setKey={setKey} />
-      <Octave setOctave={setOctave} />
       <Chord setChord={setChord} />
+      <Octave setOctave={setOctave} />
       <Length setLength={setLength} />
-      <h1>
-        {key[1]+octave}/{chord[1]}/{length[1]}
-      </h1></CardContent>
-      <CardActions>
-      <Button variant="contained" color="primary" id="button" onClick={() => {
+      <Typography variant="h4" sx={{fontWeight: "bold",textAlign: "center",m:2}}>
+        {key[1]+octave} / {chord[1]} / {length[1]}
+      </Typography>
+    </CardContent>
+    <CardActions>
+    <Grid container justifyContent="space-evenly" sx={{m:2}}>
+      <Button variant="contained" color="secondary" id="button" onClick={() => {
         const jsonData=[convertData()];
         PlayChord(jsonData);
       }}>
         Play
       </Button>
-      <Button variant="contained" color="primary" id="button" onClick={() => postChord()}>
+      <Button variant="contained" color="secondary" id="button" onClick={() => postChord()}>
         Post
-      </Button></CardActions></Card>
-    <div>
+      </Button>
+      </Grid>
+    </CardActions>
+    </Card>
 
-      <Button variant="contained" color="primary" id="button" onClick={() =>{
+      <List sx={{m:4}}>
+        {data?.map((ch)=>{
+          return (
+            <ListItem key={ch.id}>
+              <ListItemAvatar>
+                <MusicNoteIcon />
+              </ListItemAvatar>
+              <ListItemText>{ch.name}</ListItemText>
+              <IconButton id="button" onClick={() => deleteChord(ch.id)}>
+                <DeleteIcon />
+              </IconButton>
+            </ListItem>
+          )
+        })}
+      </List>
+      <Button variant="contained" color="secondary" sx={{m:2,fontWeight: "bold"}} id="button" onClick={() =>{
         PlayChord(data);
       }}>Play All</Button>
-      <Button variant="contained" color="primary" id="button" onClick={() =>{
+      <Button variant="contained" color="secondary" sx={{m:2,fontWeight: "bold"}} id="button" onClick={() =>{
         data.forEach((d)=> {
           deleteChord(d.id)
         });
       }}>Delete All</Button>
-      <ul>
-        {data?.map((ch)=>{
-          return (
-            <div key={ch.id}>
-              <li >{ch.name}</li>
-              <button id="button" onClick={() => deleteChord(ch.id)}>Delete</button>
-            </div>
-          )
-        })}
-      </ul>
-    </div>
-    </>
+    </Grid>
   )
 }
